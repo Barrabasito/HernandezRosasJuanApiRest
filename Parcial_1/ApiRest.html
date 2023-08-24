@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="Api.css">
+</head>
+<body>
+    <div class="contenedor">
+        <h1>Comida Aleatoria</h1>
+        <button id="botonfetch">Generar</button>
+        <div id="contenedorComida"></div>
+    </div>
+
+    <script>
+        const fetchButton = document.getElementById('botonfetch');
+        const mealContainer = document.getElementById('contenedorComida');
+
+        fetchButton.addEventListener('click', () => {
+            fetch('https://www.themealdb.com/api/json/v1/1/random.php')
+                .then(response => response.json())
+                .then(data => {
+                    const comida = data.meals[0];
+                    const nombreComida = comida.strMeal;
+                    const instruccionesComida = comida.strInstructions;
+                    const imagenComida = comida.strMealThumb;
+
+                    const mealHTML = `
+                        <h2>${nombreComida}</h2>
+                        <img src="${imagenComida}" alt="${nombreComida}" style="max-width: 300px;">
+                        <p>${instruccionesComida}</p>
+                    `;
+
+                    mealContainer.innerHTML = mealHTML;
+                })
+                .catch(error => {
+                    console.error('Error de la petición de la comida:', error);
+                    mealContainer.innerHTML = '<p>Error de la petición de la comida</p>';
+                });
+        });
+    </script>
+</body>
+</html>

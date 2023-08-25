@@ -1,0 +1,132 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peticiones HTTP</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="PeticionesJs.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <h1>PETICIONES HTTP</h1>
+<div class="contenedor">
+    <div class="botones">   
+        <button id="btnPeticionXMLHttpRequest">XMLHttpRequest</button>
+        <button id="btnPeticionFetchPromesa">Fetch Promesa</button>
+        <button id="btnPeticionFetchAsync">Fetch Async/Await</button>
+        <button id="btnJQuery">JQuery</button>
+        <button id="btnAxios">Axios</button>
+    </div>
+<div class="comida">
+    <div class="tituloComida">
+        <h2 id="nombreComida"></h2>
+    <img id="imagenComida" style="max-width: 300px;">
+    </div>
+    <p id="instruccionesComida"></p>
+</div>
+
+</div>
+
+    <script>
+
+        document.getElementById("btnPeticionXMLHttpRequest").addEventListener("click",function(){
+
+            const xhr = new XMLHttpRequest();
+ 
+            xhr.addEventListener("readystatechange", function () {
+            if (this.readyState === this.DONE) {
+            let data= JSON.parse(this.responseText);
+ 
+            const comida = data.meals[0];
+            const nombreComida = comida.strMeal;
+            const instruccionesComida = comida.strInstructions;
+            const imagenComida = comida.strMealThumb;
+ 
+                 document.getElementById("nombreComida").innerText=nombreComida;
+                 document.getElementById("imagenComida").src=imagenComida;
+                 document.getElementById("instruccionesComida").innerText=instruccionesComida;
+   }
+         });
+        xhr.open("GET", "https://www.themealdb.com/api/json/v1/1/random.php");
+        xhr.send();
+     })
+
+     document.getElementById("btnPeticionFetchPromesa").addEventListener("click",function(){
+        fetch('https://www.themealdb.com/api/json/v1/1/random.php')
+        //.then(function(response){response.json()})
+        .then(response=>response.json())
+        .then(data => {
+            const comida = data.meals[0];
+            const nombreComida = comida.strMeal;
+            const instruccionesComida = comida.strInstructions;
+            const imagenComida = comida.strMealThumb;
+
+            document.getElementById("nombreComida").innerText=nombreComida;
+            document.getElementById("imagenComida").src=imagenComida;
+            document.getElementById("instruccionesComida").innerText=instruccionesComida;
+    })
+})
+
+        document.getElementById("btnPeticionFetchAsync").addEventListener("click", async function(){
+            let response = await fetch('https://www.themealdb.com/api/json/v1/1/random.php');
+            let data = await response.json();
+
+            const comida = data.meals[0];
+            const nombreComida = comida.strMeal;
+            const instruccionesComida = comida.strInstructions;
+            const imagenComida = comida.strMealThumb;
+
+            document.getElementById("nombreComida").innerText=nombreComida;
+            document.getElementById("imagenComida").src=imagenComida;
+            document.getElementById("instruccionesComida").innerText=instruccionesComida;
+        })
+
+        document.getElementById("btnJQuery").addEventListener("click",function(){
+            const settings = {
+                "async": true,
+                "crossDomain": true,
+                "url": "https://www.themealdb.com/api/json/v1/1/random.php",
+                "method": "GET",
+                "dataType": "json"
+              };
+              
+              $.ajax(settings).done(function (data) {
+             
+                const comida = data.meals[0];
+                const nombreComida = comida.strMeal;
+                const instruccionesComida = comida.strInstructions;
+                const imagenComida = comida.strMealThumb;
+
+                document.getElementById("nombreComida").innerText=nombreComida;
+                document.getElementById("imagenComida").src=imagenComida;
+                document.getElementById("instruccionesComida").innerText=instruccionesComida;
+
+              });
+        })
+
+        document.getElementById("btnAxios").addEventListener("click",async function(){
+ 
+               let reqOptions = {
+                url: "https://www.themealdb.com/api/json/v1/1/random.php",
+                method: "GET"
+              }
+              let response = await axios.request(reqOptions);
+
+              const comida = response.data.meals[0];
+              const nombreComida = comida.strMeal;
+              const instruccionesComida = comida.strInstructions;
+              const imagenComida = comida.strMealThumb;
+
+              document.getElementById("nombreComida").innerText=nombreComida;
+              document.getElementById("imagenComida").src=imagenComida;
+              document.getElementById("instruccionesComida").innerText=instruccionesComida;
+        })
+
+    </script>
+
+
+</body>
+</html>

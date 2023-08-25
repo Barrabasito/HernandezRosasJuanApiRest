@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peticion con parametros</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="PeticionParametros.css">
+</head>
+<body>
+    <h1>PETICION CON PARAMETROS</h1>
+    <div class="contenedor">
+
+        <div class="seleccion">
+            <div> 
+                <label for="categoriaSelect">Seleccionar categoria:</label>
+                <select id="categoriaSelect"></select>
+            </div>
+
+            <div>
+                <label for="comidaSelect">Seleccionar comida:</label>
+                <select id="comidaSelect"></select>
+            </div>
+        </div>
+    
+        <div class="checkBoxes">
+            <div>
+                <label for="mostrarImagen"><span style="color: red;">Mostrar imagen:</span></label>
+                <input type="checkbox" id="mostrarImagen">
+            </div>
+        
+            <div>
+                <label for="mostrarCategoria"><span style="color: green;">Mostrar categoria:</span></label>
+                <input type="checkbox" id="mostrarCategoria">
+            </div>
+        
+            <div>
+                <label for="mostrarInstructiones"><span style="color: blue;">Mostrar instrucciones:</span></label>
+                <input type="checkbox" id="mostrarInstructiones">
+            </div>
+        </div>
+    
+        <div class="boton">
+            <button id="btnFetch">Fetch Promesa</button>
+        </div>
+
+        <div class="comida">
+            <div id="comidaDetalles"></div>
+        </div>
+    </div>
+    
+
+    <script>
+        const categoriaSelect = document.getElementById("categoriaSelect");
+        const comidaSelect = document.getElementById("comidaSelect");
+        const mostarImagenCheckbox = document.getElementById("mostrarImagen");
+        const mostrarCategoriaCheckbox = document.getElementById("mostrarCategoria");
+        const mostrarInstructionesCheckbox = document.getElementById("mostrarInstructiones");
+        const fetchButton = document.getElementById("btnFetch");
+        const comidaDetallesDiv = document.getElementById("comidaDetalles");
+
+        // Cargar la lista de categorías en el select al cargar la página
+        fetch("https://www.themealdb.com/api/json/v1/1/list.php?c=list")
+            .then(response => response.json())
+            .then(data => {
+                seleccionarCategoria(data.meals);
+            })
+            .catch(error => {
+                console.error("Error de consultar categorias:", error);
+            });
+
+        // Función para cargar la lista de categorías en el select
+        function seleccionarCategoria(categorias) {
+            categorias.forEach(categoria => {
+                const option = document.createElement("option");
+                option.value = categoria.strCategory;
+                option.textContent = categoria.strCategory;
+                categoriaSelect.appendChild(option);
+            });
+        }
+
+        // Cargar la lista de nombres de las comidas en el select según la categoría seleccionada
+        categoriaSelect.addEventListener("change", function() {
+            const seleccionCategoria = categoriaSelect.value;
+
+            fetch("https://www.themealdb.com/api/json/v1/1/filter.php?c=" + seleccionCategoria)
+                .then(response => response.json())
+                .then(data => {
+                    seleccionarComida(data.meals);
+                })
+                .catch(error => {
+                    console.error("Error de consultar comidas:", error);
+                });
+        });
+
+        // Función para cargar la lista de nombres de las comidas en el select
+        function seleccionarComida(comidas) {
+            comidaSelect.innerHTML = "";
+            comidas.forEach(comida => {
+                const option = document.createElement("option");
+                option.value = comida.strMeal;
+                option.textContent = comida.strMeal;
+                comidaSelect.appendChild(option);
+            });
+        }
+
+        fetchButton.addEventListener("click", fetchComidaDetalles);
+
+        function fetchComidaDetalles() {
+            const seleccionComida = comidaSelect.value;
+
+            fetch("https://www.themealdb.com/api/json/v1/1/search.php?s=" + seleccionComida)
+                .then(response => response.json())
+                .then(data => {
+                    mostrarDetallesComida(data.meals[0]);
+                })
+                .catch(error => {
+                    console.error("Error de consulta de detalles:", error);
+                });
+        }
+
+        function mostrarDetallesComida(comida) {
+            if (comida) {
+                let comidaHTML = "<h2>" + comida.strMeal + "</h2>";
+
+                if (mostarImagenCheckbox.checked) {
+                    comidaHTML += "<img src='" + comida.strMealThumb + "' alt='" + comida.strMeal + "'>";
+                }
+
+                if (mostrarCategoriaCheckbox.checked) {
+                    comidaHTML += "<p><b>Categoria:</b> " + comida.strCategory + "</p>";
+                }
+
+                if (mostrarInstructionesCheckbox.checked) {
+                    comidaHTML += "<p><b>Instructiones:</b> " + comida.strInstructions + "</p>";
+                }
+
+                comidaDetallesDiv.innerHTML = comidaHTML;
+            } else {
+                comidaDetallesDiv.innerHTML = "<p>No se encontraron detalles de la comida.</p>";
+            }
+        }
+    </script>
+</body>
+</html>

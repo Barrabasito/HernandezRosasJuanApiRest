@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button id="btnFrase">obtener Frase</button>
+    <div id="modulo"></div>
+
+    <script type="module">
+
+        import * as modules from "./moduloes.js";
+        console.log(modules.obtenerFrase(1));
+
+        document.getElementById("btnFrase").addEventListener("click", function() {
+            import("/moduloes.js")
+              .then(function(module) {
+                console.log(module.obtenerFrase(0));
+
+                document.getElementById("modulo").textContent=module.obtenerFrase(0);
+              })
+              .catch(function(error) {
+                console.error("Error al cargar el módulo:", error);
+              });
+          });
+    </script>
+</body>
+</html>

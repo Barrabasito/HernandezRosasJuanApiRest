@@ -15,7 +15,7 @@
         console.log(modules.obtenerFrase(1));
 
         document.getElementById("btnFrase").addEventListener("click", function() {
-            import("/moduloes.js")
+            import("./moduloes.js")
               .then(function(module) {
                 console.log(module.obtenerFrase(0));
 

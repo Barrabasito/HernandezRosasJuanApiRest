@@ -3,23 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>EcmaScript</title>
+    <link rel="stylesheet" href="index.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 </head>
 <body>
+  <div class="contenedor">
     <button id="btnFrase">obtener Frase</button>
     <div id="modulo"></div>
+  </div>
 
     <script type="module">
-
+        //Estatico
         import * as modules from "./moduloes.js";
         console.log(modules.obtenerFrase(1));
 
         document.getElementById("btnFrase").addEventListener("click", function() {
             import("./moduloes.js")
               .then(function(module) {
-                console.log(module.obtenerFrase(0));
-
-                document.getElementById("modulo").textContent=module.obtenerFrase(0);
+                var indice = Math.floor(Math.random() * 5);
+                document.getElementById("modulo").textContent=module.obtenerFrase(indice);
               })
               .catch(function(error) {
                 console.error("Error al cargar el módulo:", error);

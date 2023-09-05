@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peticion Express</title>
+</head>
+<body>
+    <form target="resultado" method="GET" action="http://localhost:8080/alumnos/sistemas">
+        <button type="button" id="boton">Peticion Fetch</button>
+        <button type="submit" id="boton">Peticion Submit</button>
+    </form>
+    <iframe name="resultado"></iframe>
+
+    <script>   
+     document.getElementById("boton").addEventListener("click",()=>{
+        fetch("http://localhost:8080/alumnos")
+        .the(respuesta=>respuesta.json())
+        .the(dato=>console.log(dato));
+     });
+    </script>
+
+</body>
+</html>

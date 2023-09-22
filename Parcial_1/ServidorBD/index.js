@@ -1,4 +1,5 @@
 //modulo npm i express
+//npm install express-basic-auth
 const express=require('express');
 const morgan = require('morgan');
 const fs=require('fs');
@@ -6,11 +7,26 @@ const path=require('path');
 const mysql =require('mysql2/promise');
 const app=express();
 var cors=require('cors');
+const basicAuth = require('express-basic-auth');
 
 var accessLogStream = fs.createWriteStream(path.join(__dirname,'access.log'),{flags:'a'});
 app.use(morgan('combined',{stream:accessLogStream}));
 app.use(express.json());
 app.use(cors());
+
+
+// Configurar el middleware de autenticación básica
+const auth = basicAuth({
+   users: { 'Barrabasito': '1234' }, // Aquí debes proporcionar tu usuario de GitHub y tu token personal
+   challenge: true, // Esto enviará un encabezado WWW-Authenticate para solicitar autenticación
+   unauthorizedResponse: 'Acceso no autorizado', // Mensaje en caso de autenticación fallida
+ });
+ 
+ // Ruta protegida que requiere autenticación
+ app.get('/ruta-protegida', auth, (req, res) => {
+   res.send('¡Acceso permitido!');
+ });
+
 
 //app.use(express.json());
 //CONSULTAS

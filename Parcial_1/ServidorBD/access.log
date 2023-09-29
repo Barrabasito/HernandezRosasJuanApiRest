@@ -71,3 +71,8 @@
 ::1 - - [20/Sep/2023:03:59:51 +0000] "GET /clientes HTTP/1.1" 304 - "http://127.0.0.1:5500/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36"
 ::ffff:127.0.0.1 - Barrabasito [22/Sep/2023:13:42:30 +0000] "GET /clientes HTTP/1.1" 500 2 "-" "Thunder Client (https://www.thunderclient.com)"
 ::ffff:127.0.0.1 - Barrabasito [22/Sep/2023:13:43:21 +0000] "GET /clientes HTTP/1.1" 200 400 "-" "Thunder Client (https://www.thunderclient.com)"
+::1 - - [27/Sep/2023:13:33:33 +0000] "POST /clientes HTTP/1.1" 500 52 "http://127.0.0.1:5500/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36"
+::1 - - [27/Sep/2023:13:33:33 +0000] "GET /favicon.ico HTTP/1.1" 404 150 "http://localhost:8080/clientes" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36"
+::1 - - [27/Sep/2023:13:34:09 +0000] "POST /clientes HTTP/1.1" 500 52 "http://127.0.0.1:5500/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36"
+::1 - - [29/Sep/2023:13:36:17 +0000] "POST /clientes HTTP/1.1" 200 41 "http://127.0.0.1:5500/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36"
+::1 - - [29/Sep/2023:13:41:58 +0000] "POST /clientes HTTP/1.1" 200 93 "http://127.0.0.1:5500/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36"

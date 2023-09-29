@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Type</title>
+</head>
+<body>
+    <form id="formulario">
+        <label for="nombre">Nombre:</label>
+        <input id="nombre" name="nombre" type="text">
+        <label for="calle">Calle:</label>
+        <input id="calle" name="calle" type="text">
+        <label for="ciudad">Ciudad:</label>
+        <input id="ciudad" name="ciudad" type="text">
+        <button type="submit">Enviar</button>
+    </form>
+        <script>
+            document.getElementById('formulario').addEventListener('submit', function(e) {
+                e.preventDefault();
+    
+                const formData = new FormData(this);
+    
+                fetch('http://localhost:8080/clientes', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: new URLSearchParams(formData)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    //la respuesta del servidor
+                })
+                .catch(error => console.error('Error:', error));
+            });
+        </script>
+</body>
+</html>

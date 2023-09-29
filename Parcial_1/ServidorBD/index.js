@@ -1,5 +1,7 @@
 //modulo npm i express
 //npm install express-basic-auth
+//npm install express body-parser
+
 const express=require('express');
 const morgan = require('morgan');
 const fs=require('fs');
@@ -8,12 +10,16 @@ const mysql =require('mysql2/promise');
 const app=express();
 var cors=require('cors');
 const basicAuth = require('express-basic-auth');
+//express body-parser
+const bodyParser = require('body-parser');
 
 var accessLogStream = fs.createWriteStream(path.join(__dirname,'access.log'),{flags:'a'});
 app.use(morgan('combined',{stream:accessLogStream}));
 app.use(express.json());
 app.use(cors());
 
+// Middleware para procesar application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // Configurar el middleware de autenticación básica
 const auth = basicAuth({
@@ -53,17 +59,34 @@ app.get("/clientes/:id",async(req,res)=>{
 });
 
 //ALTAS
-app.post("/clientes", async (req, res) => {
-   try {
-      const conn = await mysql.createConnection({ host: 'localhost', user: 'root', password: '', database: 'banco' });
+// app.post("/clientes", async (req, res) => {
+//    try {
+//       const conn = await mysql.createConnection({ host: 'localhost', user: 'root', password: '', database: 'banco' });
 
-      const { nombre, calle, ciudad } = req.body;
-      await conn.query('INSERT INTO cliente (nombre_cliente, calle_cliente, ciudad_cliente) VALUES (?, ?, ?)', [nombre, calle, ciudad]);
+//       const { nombre, calle, ciudad } = req.body;
+//       await conn.query('INSERT INTO cliente (nombre_cliente, calle_cliente, ciudad_cliente) VALUES (?, ?, ?)', [nombre, calle, ciudad]);
 
-      res.json({ mensaje: "Cliente creado exitosamente" });
-   } catch (err) {
-      res.status(500).json({ mensaje: err.sqlMessage });
-   }
+//       res.json({ mensaje: "Cliente creado exitosamente" });
+//    } catch (err) {
+//       res.status(500).json({ mensaje: err.sqlMessage });
+//    }
+// });
+
+// Ruta para procesar el formulario
+app.post('/clientes', (req, res) => {
+   const nombre = req.body.nombre;
+   const calle = req.body.calle;
+   const ciudad = req.body.ciudad;
+
+   //Datos recibidos
+   const respuesta = {
+       mensaje: 'Datos recibidos con éxito',
+       nombre: nombre,
+       calle: calle,
+       ciudad: ciudad
+   };
+
+   res.json(respuesta);
 });
 
 //BAJAS

@@ -105,3 +105,5 @@
 ::ffff:127.0.0.1 - - [05/Oct/2023:16:14:43 +0000] "POST /clientes HTTP/1.1" 500 412 "-" "Thunder Client (https://www.thunderclient.com)"
 ::ffff:127.0.0.1 - - [05/Oct/2023:16:15:08 +0000] "POST /clientes HTTP/1.1" 500 413 "-" "Thunder Client (https://www.thunderclient.com)"
 ::ffff:127.0.0.1 - - [05/Oct/2023:16:15:20 +0000] "GET /clientes/1 HTTP/1.1" 500 347 "-" "Thunder Client (https://www.thunderclient.com)"
+::ffff:127.0.0.1 - - [05/Oct/2023:16:16:13 +0000] "GET /clientes/1 HTTP/1.1" 500 350 "-" "Thunder Client (https://www.thunderclient.com)"
+::ffff:127.0.0.1 - - [05/Oct/2023:16:17:10 +0000] "GET /clientes/1 HTTP/1.1" 500 350 "-" "Thunder Client (https://www.thunderclient.com)"

@@ -3,7 +3,6 @@
 const express = require('express');
 const { check, validationResult } = require('express-validator');
 const app = express();
-const validadores=require
 
 app.use(express.json());
 
@@ -28,4 +27,4 @@ app.listen(8090, () => {
 //Un framework de texteo
 //uno de esos es express-validator
 //Moca es viejito
-//Texteo, documentacion de manejo de errores explicarlo y excentar
+//Texteo, documentacion de manejo de errores explicarlo y exentar

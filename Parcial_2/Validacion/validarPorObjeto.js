@@ -1,30 +1,13 @@
 //npm i express-validator
 //npm i express
 const express = require('express');
-const { check, validationResult, checkSchema } = require('express-validator');
+const { validationResult } = require('express-validator');
+const { clienteValidacionescheckSchema } = require('./validaciones.js'); // Ruta de las validaciones
 const app = express();
 
-app.use(express.json()); // Middleware para procesar datos JSON en las solicitudes
+app.use(express.json());
 
-app.post('/clientes', checkSchema({
-  'id_cliente': {
-    isLength: {
-      options: { min: 5, max: 10 },
-      errorMessage: 'El ID del cliente debe tener entre 5 y 10 caracteres',
-    },
-  },
-  'edad': {
-    isNumeric: {
-      errorMessage: 'Debe ser una edad válida',
-    },
-  },
-  'correo': {
-    isEmail: {
-      errorMessage: 'Correo válido requerido',
-    },
-  },
-  // Agrega más validaciones según tus requisitos
-}), (req, res) => {
+app.post('/clientes', clienteValidacionescheckSchema, (req, res) => {
   const errors = validationResult(req);
   if (errors.isEmpty()) {
     console.log(req.body);

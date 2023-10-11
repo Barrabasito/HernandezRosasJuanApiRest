@@ -1,0 +1,16 @@
+{
+  "name": "barrabasito",
+  "version": "1.0.0",
+  "description": "Instalacion del modulo:\r ```bash\r $ npm install barrabasito\r ```",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "doc": "jsdoc -c jsdoc.json --readme README.MD"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "clean-jsdoc-theme": "^4.2.13"
+  }
+}

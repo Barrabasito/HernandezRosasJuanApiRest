@@ -1,0 +1,8 @@
+persona:
+  nombre: Juan Pérez
+  edad: 30
+  ocupacion: Desarrollador
+  direccion:
+    calle: Calle Principal 123
+    ciudad: Ciudad Ejemplo
+    estado: Estado de Ejemplo

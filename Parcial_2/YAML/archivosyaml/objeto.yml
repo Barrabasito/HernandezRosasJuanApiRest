@@ -1,0 +1,11 @@
+persona:
+  nombre: Juan Pérez
+  edad: 30
+  dirección:
+    calle: Calle Principal 123
+    ciudad: Ciudad Ejemplo
+    estado: Estado de Ejemplo
+  hobbies:
+    - Leer
+    - Jugar al fútbol
+    - Viajar

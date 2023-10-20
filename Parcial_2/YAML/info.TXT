@@ -1,0 +1,7 @@
+va ser documentada nuestra api en YAML
+XML
+json
+YAML llave: valor siempre hay que haber un espacio, si se ve un guion es un arreglo
+nuetra api se va documentar en YAML
+solo hay que diferenciar que es un arreglo y que es un objeto
+ 

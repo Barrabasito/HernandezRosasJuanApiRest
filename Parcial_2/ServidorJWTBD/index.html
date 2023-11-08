@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banco</title>
+    <link href="https://unpkg.com/gridjs/dist/theme/mermaid.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <body>
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <h1>ACCIONES DEL SERVIDOR</h1>  
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12 col-md-6 col-lg-12">
+                <textarea class="form-control" rows="2" id="tokenInput" placeholder="Ingresa tu token para la verificación"></textarea>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-12">
+                <button class="btn btn-primary mt-2" onclick="consultarConToken()">Consultar Clientes</button>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <div id="clientes"></div>
+             </div>
+        </div>
+
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12">
+            <h3>Agregar Cliente</h3>
+         </div>
+    </div>
+
+    <form id="crearCliente">
+    <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-3">
+                <label for="user">Usuario:</label>
+                <input class="form-control" type="text" id="user" name="usuario" placeholder="Usuario">
+             </div>
+
+             <div class="col-sm-12 col-md-12 col-lg-3">
+                <label for="pass">Password:</label>
+            <input class="form-control" type="password" id="pass" name="password" placeholder="Contraseña">
+             </div>
+
+             <div class="col-sm-12 col-md-12 col-lg-3">
+                <label for="nombre">Nombre:</label>
+                <input class="form-control" type="text" id="nombre" name="nombre" placeholder="Nombre">
+             </div>
+
+             <div class="col-sm-12 col-md-12 col-lg-3">
+                <label for="edad">Edad:</label>
+                <input class="form-control" type="number" id="edad" name="edad" placeholder="Edad">
+             </div>
+    </div>
+          
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-3">  
+            <label for="calle">Calle:</label>
+            <input class="form-control" type="text" id="calle" name="calle" placeholder="Calle">
+         </div>
+
+         <div class="col-sm-12 col-md-12 col-lg-3">   
+            <label for="ciudad">Ciudad:</label>
+            <input class="form-control" type="text" id="ciudad" name="ciudad" placeholder="Ciudad">
+         </div>
+
+         <div class="col-sm-12 col-md-12 col-lg-3">
+            <label for="correo">Correo:</label>
+            <input class="form-control" type="email" id="correo" name="correo" placeholder="Correo">
+         </div>
+
+         <div class="col-sm-12 col-md-12 col-lg-3">
+            <label for="fecha">Fecha:</label>
+            <input class="form-control" type="date" id="fecha" name="fecha_registro">
+         </div>
+
+         <div class="col-sm-12 col-md-12 col-lg-12">
+            <button class="btn btn-success" type="submit">Agregar</button>
+         </div>
+</div>
+        </form>
+
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <h3>Consultar Cliente por ID</h3>
+                 </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-3">
+                    <label for="idCliente">Id del Cliente:</label>
+                    <input class="form-control" type="text" id="idCliente" name="idCliente">
+                 </div>
+
+                 <div class="col-sm-12 col-md-6 col-lg-12">
+                    <button class="btn btn-primary mt-2" onclick="consultarIDConToken()">Consultar</button>
+                </div>
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <div id="tokenCliente"></div>
+                 </div>
+            </div>
+           
+      
+
+        <script src="https://unpkg.com/gridjs/dist/gridjs.umd.js"></script>
+        <script>
+            async function consultarConToken() {
+                const token = document.getElementById('tokenInput').value;
+                const response = await fetch('http://localhost:8060/clientes', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                if (response.status === 200) {
+                    const data = await response.json();
+                    // Mapear los datos en el formato deseado
+                    const mappedData = data.map(cliente => [cliente.id_cliente, cliente.usuario, cliente.password, cliente.nombre, cliente.edad, cliente.calle, cliente.ciudad, cliente.correo, cliente.fecha_registro]);
+                    
+                    document.getElementById('clientes').innerText = '';
+
+                    // Crear una tabla con Grid.js en el elemento con id "clientes"
+                    const grid = new gridjs.Grid({
+                       columns: ['Id', 'Usuario', 'Password', 'Nombre', 'Edad', 'Calle', 'Ciudad', 'Correo', 'Fecha de registro'],
+                       data: mappedData
+                  });
+  
+                  grid.render(document.getElementById("clientes"));
+                } else {
+                    const errorData = await response.json();
+                    document.getElementById('clientes').innerText = 'Token no válido. Error del servidor: ' + errorData.error;
+                    
+                    const errorMessage = 'Token no válido. Error del servidor: ' + errorData.error;
+                    window.alert(errorMessage);
+                }
+            }   
+        </script>       
+        
+        <script>
+            //fecha actual del sistema en el formato "YYYY-MM-DD".
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('fecha').value = today;
+        </script>
+
+        <script>
+            document.getElementById('crearCliente').addEventListener('submit',async function(e) {
+                e.preventDefault();
+    
+                const formData = new FormData(this);
+                const token = document.getElementById('tokenInput').value;
+                const response = await fetch('http://localhost:8060/clientes', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: new URLSearchParams(formData)
+                })
+                if (response.status === 200) {
+                    const data = await response.json();
+                    const message = 'Token válido. Respuesta del servidor: ' + data.mensaje;
+                    window.alert(message);
+                } else {
+                    const errorData =await response.json();   
+                    const errorMessage = 'Token no válido. Error del servidor: ' + errorData.error;
+                    window.alert(errorMessage);
+                }
+            });
+        </script>   
+
+        <script>
+            async function consultarIDConToken() {
+                const token = document.getElementById('tokenInput').value;
+                const id = document.getElementById('idCliente').value;
+                const response = await fetch(`http://localhost:8060/clientes/${id}`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                if (response.status === 200) {
+                    const data = await response.json();
+                    document.getElementById('tokenCliente').innerText =data;
+                    const message = 'Token válido. Respuesta del servidor: ' + data;
+                    window.alert(message);
+                } else {
+                    const errorData = await response.json();
+                    document.getElementById('tokenCliente').innerText = 'Token no válido. Error del servidor: ' + errorData.error;
+                    
+                    const errorMessage = 'Token no válido. Error del servidor: ' + errorData.error;
+                    window.alert(errorMessage);
+                }
+            }   
+        </script>         
+
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    </body>
+</body>
+</html>

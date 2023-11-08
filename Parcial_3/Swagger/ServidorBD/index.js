@@ -141,7 +141,7 @@ app.put("/clientes", async (req, res) => {
    {url: "http://localhost:8083"}
    ],
    },
-   apis: [`${path.join(__dirname,"./routes/ruta_empleado.js")}`],
+   apis: [`${path.join(__dirname,"./index.js")}`],
    };
 
    const swaggerDocs = swaggerJsDoc(swaggerOptions);

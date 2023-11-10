@@ -39,6 +39,25 @@ const auth = basicAuth({
 
 //app.use(express.json());
 //CONSULTAS
+/**
+ * @swagger
+ * /clientes/:
+ *   get:
+ *     tags:
+ *       - cliente
+ *     summary: consultar clientes
+ *     description: Descripcion de peticion a la ruta clientes/id
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         description: ID del cliente
+ *     responses:
+ *       200:
+ *         desciption: Informacion del cliente
+ *         type: json
+ */ 
 app.get("/clientes",async(req,res)=>{    
     try{
         const conn=await mysql.createConnection({host:'localhost',user:'root',password:'',database:'banco'})

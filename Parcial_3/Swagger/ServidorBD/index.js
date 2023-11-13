@@ -3,6 +3,8 @@
 //npm install express body-parser
 //npm i swagger-ui-express
 //npm i swagger-jsdoc
+//npm i swagger-themes
+const { SwaggerTheme } = require('swagger-themes');
 const express=require('express');
 const morgan = require('morgan');
 const fs=require('fs');
@@ -16,10 +18,17 @@ const bodyParser = require('body-parser');
 const swaggerUI = require('swagger-ui-express');
 const swaggerJsDoc = require('swagger-jsdoc');
 
+
 var accessLogStream = fs.createWriteStream(path.join(__dirname,'access.log'),{flags:'a'});
 app.use(morgan('combined',{stream:accessLogStream}));
 app.use(express.json());
 app.use(cors());
+const theme = new SwaggerTheme('v3');
+
+const options = {
+   explorer: true,
+   customCss: theme.getBuffer('monokai')
+ };
 
 // Middleware para procesar application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -148,27 +157,37 @@ app.put("/clientes", async (req, res) => {
  });
 
 
+//const swaggerOptions = {
+    //definition: {
+    //openapi: '3.0.0',
+    //info: {
+    //title: 'API Empleados',
+    //version: '1.0.0',
+    //},
+    //servers:[
+    //{url: "http://localhost:8083"}
+    //],
+   // },
+  //  apis: [`${path.join(__dirname,"./routes/ruta_empleado.js")}`],
+ //   };
+ const def = fs.readFileSync(path.join(__dirname,'/swagger.json'),{encoding: 'utf8',flag:'r'});
+ const defObj = JSON.parse(def);
+ 
+ const swaggerOptions={
+    definition:defObj,
+    apis: [`${path.join(__dirname,"./index.js")}`],
+ }
 
- const swaggerOptions = {
-   definition: {
-   openapi: '3.0.0',
-   info: {
-   title: 'API Empleados',
-   version: '1.0.0',
-   },
-   servers:[
-   {url: "http://localhost:8083"}
-   ],
-   },
-   apis: [`${path.join(__dirname,"./index.js")}`],
-   };
 
-   const swaggerDocs = swaggerJsDoc(swaggerOptions);
-app.use("/api-docs",swaggerUI.serve,swaggerUI.setup(swaggerDocs));
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
+app.use("/api-docs",swaggerUI.serve,swaggerUI.setup(swaggerDocs,options));
 
+app.use("/api-docs-json",(req,res)=>{
+   res.json(swaggerDocs);
+});
 
-app.listen(8083,()=>{
-    console.log("Servidor express escuchando en el puerto 8083");
+app.listen(8084,()=>{
+    console.log("Servidor express escuchando en el puerto 8084");
 });
 //npm i morgan
 //npm i mysql

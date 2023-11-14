@@ -17,7 +17,8 @@ const basicAuth = require('express-basic-auth');
 const bodyParser = require('body-parser');
 const swaggerUI = require('swagger-ui-express');
 const swaggerJsDoc = require('swagger-jsdoc');
-
+//npm install redoc-express
+const redoc = require('redoc-express');
 
 var accessLogStream = fs.createWriteStream(path.join(__dirname,'access.log'),{flags:'a'});
 app.use(morgan('combined',{stream:accessLogStream}));
@@ -156,23 +157,13 @@ app.put("/clientes", async (req, res) => {
     }
  });
 
-
-//const swaggerOptions = {
-    //definition: {
-    //openapi: '3.0.0',
-    //info: {
-    //title: 'API Empleados',
-    //version: '1.0.0',
-    //},
-    //servers:[
-    //{url: "http://localhost:8083"}
-    //],
-   // },
-  //  apis: [`${path.join(__dirname,"./routes/ruta_empleado.js")}`],
- //   };
  const def = fs.readFileSync(path.join(__dirname,'/swagger.json'),{encoding: 'utf8',flag:'r'});
  const defObj = JSON.parse(def);
- 
+
+ const read = fs.readFileSync(path.join(__dirname,'/README.md'),{encoding: 'utf8',flag:'r'});
+
+ defObj.info.description = read;
+
  const swaggerOptions={
     definition:defObj,
     apis: [`${path.join(__dirname,"./index.js")}`],
@@ -186,9 +177,47 @@ app.use("/api-docs-json",(req,res)=>{
    res.json(swaggerDocs);
 });
 
+
+ // define title and specUrl location
+ // serve redoc
+ app.get(
+   '/api-docs-redoc',
+   redoc({
+     title: 'API Docs',
+     specUrl: '/api-docs-json',
+     nonce: '', // <= it is optional,we can omit this key and value
+     // we are now start supporting the redocOptions object
+     // you can omit the options object if you don't need it
+     // https://redocly.com/docs/api-reference-docs/configuration/functionality/
+     redocOptions: {
+       theme: {
+         colors: {
+           primary: {
+             main: '#6EC5AB'
+           }
+         },
+         typography: {
+           fontFamily: `"museo-sans", 'Helvetica Neue', Helvetica, Arial, sans-serif`,
+           fontSize: '15px',
+           lineHeight: '1.5',
+           code: {
+             code: '#87E8C7',
+             backgroundColor: '#4D4D4E'
+           }
+         },
+         menu: {
+           backgroundColor: '#ffffff'
+         }
+       }
+     }
+   })
+ );
+ 
+
 app.listen(8084,()=>{
     console.log("Servidor express escuchando en el puerto 8084");
 });
 //npm i morgan
 //npm i mysql
 //npm i mysql2
+//redoc express instalar te va generar otro tipo de documentacion

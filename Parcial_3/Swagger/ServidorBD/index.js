@@ -62,6 +62,8 @@ const auth = basicAuth({
  *     parameters:
  *       - in: path
  *         name: id
+ *         schema:
+ *           type: integer
  *         description: ID del cliente
  *     responses:
  *       200:

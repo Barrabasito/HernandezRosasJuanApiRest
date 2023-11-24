@@ -7,7 +7,7 @@ fetch("http://localhost:8084/api-docs-json")
 .then(respuesta => respuesta.json())
 .then(desc => {
 
-console.log(desc)
+console.log(desc);
 
 // define input:
 const openApi = desc;

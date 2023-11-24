@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "chai": "^4.3.10",
+    "init": "^0.1.2",
+    "mocha": "^10.2.0"
+  },
+  "scripts": {
+    "test": "mocha 'src/test/testeo.js'"
+}
+}
